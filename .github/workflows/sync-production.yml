@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '0 0,6 * * *'  # 매일 09:00, 15:00에 실행(KST)
     - cron: '30 6 * * *'
+    - cron: '55 6 * * *'
+    - cron: '0,5,10,15,20,25,30 7 * * *'
   workflow_dispatch:  # 수동 실행 옵션 추가
 
 jobs:
