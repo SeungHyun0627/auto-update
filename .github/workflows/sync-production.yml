@@ -11,23 +11,25 @@ jobs:
   sync:
     runs-on: ubuntu-latest
 
-    steps:
-      # 1. 체크아웃
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 2. 원본 레포지토리와 동기화
-      - name: Sync with upstream
+    strategy:
+      fail-fast: false  # 하나 실패해도 계속 진행
+      matrix:
+        repo:
+          - SeungHyun0627/rounz-cms
+          - SeungHyun0627/rounz-cms-fe
+          - SeungHyun0627/rounz-cms-api
+          - SeungHyun0627/rounz-cms-worker
+          - SeungHyun0627/rounz-com
+          - SeungHyun0627/rounz-service-api
+          - SeungHyun0627/rounz-scm-admin
+          - SeungHyun0627/kakao-alimtalk-api
+
+    steps:
+      - name: Sync ${{ matrix.repo }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_UPDATE_TOKEN }}
         run: |
-          gh repo sync SeungHyun0627/rounz-cms -b production
-          gh repo sync SeungHyun0627/rounz-cms-fe -b production
-          gh repo sync SeungHyun0627/rounz-cms-api -b production
-          gh repo sync SeungHyun0627/rounz-cms-worker -b production
-          gh repo sync SeungHyun0627/rounz-com -b production
-          gh repo sync SeungHyun0627/rounz-service-api -b production
-          gh repo sync SeungHyun0627/rounz-scm-admin -b production
-          gh repo sync SeungHyun0627/kakao-alimtalk-api -b production
+          echo "🔄 Syncing ${{ matrix.repo }}..."
+          gh repo sync ${{ matrix.repo }} -b production
+          echo "✅ Successfully synced ${{ matrix.repo }}"
