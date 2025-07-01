@@ -32,4 +32,4 @@ jobs:
         run: |
           echo "🔄 Syncing ${{ matrix.repo }}..."
           gh repo sync ${{ matrix.repo }} -b production
-          echo "✅ Successfully synced ${{ matrix.repo }}"
+          echo "✅ Successfully synced ${{ matrix.repo }} - $(date -u)"
