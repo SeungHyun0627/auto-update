@@ -1,0 +1,33 @@
+name: Sync Production Branch
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '30 0 * * *'  # 매일 09:30에 실행(KST)
+  workflow_dispatch:  # 수동 실행 옵션 추가
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 2. 원본 레포지토리와 동기화
+      - name: Sync with upstream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_UPDATE_TOKEN }}
+        run: |
+          gh repo sync SeungHyun0627/rounz-cms -b production
+          gh repo sync SeungHyun0627/rounz-cms-fe -b production
+          gh repo sync SeungHyun0627/rounz-cms-api -b production
+          gh repo sync SeungHyun0627/rounz-cms-worker -b production
+          gh repo sync SeungHyun0627/rounz-com -b production
+          gh repo sync SeungHyun0627/rounz-service-api -b production
+          gh repo sync SeungHyun0627/rounz-scm-admin -b production
+          gh repo sync SeungHyun0627/kakao-alimtalk-api -b production
